@@ -1,14 +1,15 @@
+import 'belongs_to_collection.model.dart';
 import 'production_companies.model.dart';
 import 'production_countries.model.dart';
 import 'spoken_languages.model.dart';
 
-class MovieDetails {
+class MovieDetailsModel {
   bool adult;
   String backdropUrl;
-  Null belongsToCollection;
+  BelongsToCollectionModel belongsToCollection;
   int budget;
   List<String> genres;
-  Null homepage;
+  String homepage;
   int id;
   String imdbId;
   String originalLanguage;
@@ -16,12 +17,12 @@ class MovieDetails {
   String overview;
   double popularity;
   String posterUrl;
-  List<ProductionCompanies> productionCompanies;
-  List<ProductionCountries> productionCountries;
+  List<ProductionCompaniesModel> productionCompanies;
+  List<ProductionCountriesModel> productionCountries;
   String releaseDate;
   int revenue;
   int runtime;
-  List<SpokenLanguages> spokenLanguages;
+  List<SpokenLanguagesModel> spokenLanguages;
   String status;
   String tagline;
   String title;
@@ -29,37 +30,39 @@ class MovieDetails {
   double voteAverage;
   int voteCount;
 
-  MovieDetails(
+  MovieDetailsModel(
       {this.adult,
-        this.backdropUrl,
-        this.belongsToCollection,
-        this.budget,
-        this.genres,
-        this.homepage,
-        this.id,
-        this.imdbId,
-        this.originalLanguage,
-        this.originalTitle,
-        this.overview,
-        this.popularity,
-        this.posterUrl,
-        this.productionCompanies,
-        this.productionCountries,
-        this.releaseDate,
-        this.revenue,
-        this.runtime,
-        this.spokenLanguages,
-        this.status,
-        this.tagline,
-        this.title,
-        this.video,
-        this.voteAverage,
-        this.voteCount});
+      this.backdropUrl,
+      this.belongsToCollection,
+      this.budget,
+      this.genres,
+      this.homepage,
+      this.id,
+      this.imdbId,
+      this.originalLanguage,
+      this.originalTitle,
+      this.overview,
+      this.popularity,
+      this.posterUrl,
+      this.productionCompanies,
+      this.productionCountries,
+      this.releaseDate,
+      this.revenue,
+      this.runtime,
+      this.spokenLanguages,
+      this.status,
+      this.tagline,
+      this.title,
+      this.video,
+      this.voteAverage,
+      this.voteCount});
 
-  MovieDetails.fromJson(Map<String, dynamic> json) {
+  MovieDetailsModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropUrl = json['backdrop_url'];
-    belongsToCollection = json['belongs_to_collection'];
+    belongsToCollection = json['belongs_to_collection'] != null
+        ? new BelongsToCollectionModel.fromJson(json['belongs_to_collection'])
+        : null;
     budget = json['budget'];
     genres = json['genres'].cast<String>();
     homepage = json['homepage'];
@@ -71,24 +74,24 @@ class MovieDetails {
     popularity = json['popularity'];
     posterUrl = json['poster_url'];
     if (json['production_companies'] != null) {
-      productionCompanies = new List<ProductionCompanies>();
+      productionCompanies = new List<ProductionCompaniesModel>();
       json['production_companies'].forEach((v) {
-        productionCompanies.add(new ProductionCompanies.fromJson(v));
+        productionCompanies.add(new ProductionCompaniesModel.fromJson(v));
       });
     }
     if (json['production_countries'] != null) {
-      productionCountries = new List<ProductionCountries>();
+      productionCountries = new List<ProductionCountriesModel>();
       json['production_countries'].forEach((v) {
-        productionCountries.add(new ProductionCountries.fromJson(v));
+        productionCountries.add(new ProductionCountriesModel.fromJson(v));
       });
     }
     releaseDate = json['release_date'];
     revenue = json['revenue'];
     runtime = json['runtime'];
     if (json['spoken_languages'] != null) {
-      spokenLanguages = new List<SpokenLanguages>();
+      spokenLanguages = new List<SpokenLanguagesModel>();
       json['spoken_languages'].forEach((v) {
-        spokenLanguages.add(new SpokenLanguages.fromJson(v));
+        spokenLanguages.add(new SpokenLanguagesModel.fromJson(v));
       });
     }
     status = json['status'];
@@ -104,6 +107,8 @@ class MovieDetails {
     data['adult'] = this.adult;
     data['backdrop_url'] = this.backdropUrl;
     data['belongs_to_collection'] = this.belongsToCollection;
+    if (this.belongsToCollection != null)
+      data['belongs_to_collection'] = this.belongsToCollection.toJson();
     data['budget'] = this.budget;
     data['genres'] = this.genres;
     data['homepage'] = this.homepage;

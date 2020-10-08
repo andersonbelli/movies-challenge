@@ -1,10 +1,10 @@
-class SpokenLanguages {
+class SpokenLanguagesModel {
   String iso6391;
   String name;
 
-  SpokenLanguages({this.iso6391, this.name});
+  SpokenLanguagesModel({this.iso6391, this.name});
 
-  SpokenLanguages.fromJson(Map<String, dynamic> json) {
+  SpokenLanguagesModel.fromJson(Map<String, dynamic> json) {
     iso6391 = json['iso_639_1'];
     name = json['name'];
   }

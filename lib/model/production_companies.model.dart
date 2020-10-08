@@ -1,12 +1,12 @@
-class ProductionCompanies {
+class ProductionCompaniesModel {
   int id;
   String logoUrl;
   String name;
   String originCountry;
 
-  ProductionCompanies({this.id, this.logoUrl, this.name, this.originCountry});
+  ProductionCompaniesModel({this.id, this.logoUrl, this.name, this.originCountry});
 
-  ProductionCompanies.fromJson(Map<String, dynamic> json) {
+  ProductionCompaniesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     logoUrl = json['logo_url'];
     name = json['name'];

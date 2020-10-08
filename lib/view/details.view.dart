@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 
 class DetailsView extends StatelessWidget {
-  final MovieDetails details;
+  final MovieDetailsModel details;
 
   DetailsView({@required this.details});
 

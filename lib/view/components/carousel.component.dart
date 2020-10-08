@@ -15,13 +15,11 @@ class Carousel extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
-            // TODO: Handle this case.
             break;
           case ConnectionState.waiting:
             return Center(child: CircularProgressIndicator());
             break;
           case ConnectionState.active:
-            // TODO: Handle this case.
             break;
           case ConnectionState.done:
             if (snapshot.hasError) {
@@ -44,14 +42,13 @@ class Carousel extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         onPressed: () {
+                          // TODO try again
                           print("try again");
                         })
                   ],
                 ),
               );
             } else {
-              print("\n\n ELSE? ");
-
               return Swiper(
                 fade: 0.8,
                 loop: false,
@@ -86,7 +83,7 @@ class Carousel extends StatelessWidget {
             break;
         }
 
-        return Text("Nothing to see here");
+        return Text("Nothing to see here 🤔");
       },
     );
   }

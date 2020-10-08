@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:movies_challenge/constants/constants.constants.dart';
 import 'package:movies_challenge/model/movie.model.dart';
+import 'package:movies_challenge/model/movie_details.model.dart';
 
-class MoviesListController {
+class MovieDetailController {
   Dio _dio = new Dio(BaseOptions(
     sendTimeout: 5000,
     validateStatus: (status) {
@@ -10,14 +11,18 @@ class MoviesListController {
     },
   ));
 
-  Future<List<MovieModel>> fetchMovies() async {
+  Future<MovieDetailsModel> fetchMovieDetail(int id) async {
     try {
       Response response =
-          await _dio.get("${Constants.BASEURL}${Constants.MOVIESURL}");
+          await _dio.get("${Constants.BASEURL}${Constants.MOVIESURL}/$id");
 
-      var responseData = response.data;
+      // print("Details data: ${response.data} \n\n");
 
-      return parseMovies(responseData);
+      var responseData = MovieDetailsModel.fromJson(response.data);
+
+      print(responseData.toJson());
+
+      return responseData;
     } on DioError catch (e) {
       print("Error code: " +
           e.response.statusCode.toString() +
@@ -26,11 +31,5 @@ class MoviesListController {
 
       return null;
     }
-  }
-
-  List<MovieModel> parseMovies(List<dynamic> json) {
-    final data = MovieListModel.fromJson(json);
-
-    return data.movies;
   }
 }
