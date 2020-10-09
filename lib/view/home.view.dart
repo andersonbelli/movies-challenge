@@ -17,7 +17,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _curIndex = 0;
 
-  final List<Widget> _children = [Carousel(), DetailsView()];
+  final List<Widget> _children = [Carousel()];
 
   @override
   Widget build(BuildContext context) {

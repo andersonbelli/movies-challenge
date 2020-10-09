@@ -26,15 +26,31 @@ class CarouselItem extends StatelessWidget {
         children: <Widget>[
           ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(45)),
-              child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl,
-                  placeholder: (context, url) => Image.asset(
-                        "lib/assets/images/movie_placeholder.png",
-                        height: screenHeight - 180,
-                        fit: BoxFit.fill,
-                      ),
-                  fit: BoxFit.fill,
-                  height: screenHeight - 180)),
+              child: Image.network(
+                movie.posterUrl,
+                errorBuilder: (BuildContext context, Object object,
+                    StackTrace stacktrace) {
+                  return Image.asset(
+                    "lib/assets/images/movie_placeholder.png",
+                    height: screenHeight - 180,
+                    fit: BoxFit.fill,
+                  );
+                },
+                height: screenHeight - 180,
+                fit: BoxFit.fill,
+              )
+              // CachedNetworkImage(
+              //     imageUrl: movie.posterUrl,
+              //     placeholder: (context, url) {
+              //       print(url.toString());
+              //
+              //       return Image.asset(
+              //         "lib/assets/images/movie_placeholder.png",
+              //         height: screenHeight - 180,
+              //         fit: BoxFit.fill,
+              //       );
+              //     }),
+              ),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
