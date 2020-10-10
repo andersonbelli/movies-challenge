@@ -34,20 +34,13 @@ class _HomeViewState extends State<HomeView> {
       // extendBody: true,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          // color: Color.lerp(Colors.deepPurple[800], Colors.transparent, 0.2),
           color: Colors.transparent,
-          // borderRadius: BorderRadius.only(
-          //     topRight: Radius.circular(55), topLeft: Radius.circular(55)),
-          // boxShadow: [
-          //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-          // ],
         ),
         child: BottomNavigationBar(
           elevation: 0,
           currentIndex: _curIndex,
           selectedIconTheme: IconThemeData(size: 35),
           showUnselectedLabels: true,
-          // unselectedIconTheme: IconThemeData(color: Colors.white38),
           selectedItemColor: Colors.black87,
           unselectedIconTheme: IconThemeData(color: Colors.black54),
           unselectedLabelStyle: TextStyle(color: Colors.black54),
@@ -59,16 +52,13 @@ class _HomeViewState extends State<HomeView> {
           },
           items: [
             BottomNavigationBarItem(
-              // backgroundColor: Colors.deepPurple,
               backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.home,
-                // size: 25,
               ),
               title: Text("Home", style: TextStyle(color: Colors.black87)),
             ),
             BottomNavigationBarItem(
-              // backgroundColor: Colors.deepPurpleAccent,
               backgroundColor: Colors.transparent,
               icon: Icon(Icons.list),
               title:

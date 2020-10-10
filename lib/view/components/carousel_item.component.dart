@@ -5,52 +5,27 @@ import 'package:movies_challenge/controller/movie_detail.controller.dart';
 import 'package:movies_challenge/controller/movies_list.controller.dart';
 import 'package:movies_challenge/model/movie.model.dart';
 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 import '../details.view.dart';
+import 'CustomImage.dart';
 
 class CarouselItem extends StatelessWidget {
   final MovieModel movie;
 
   CarouselItem({this.movie});
 
-  final MoviesListController _moviesListController = MoviesListController();
-  final MovieDetailController _movieDetailController = MovieDetailController();
-
   @override
   Widget build(BuildContext context) {
-    var _mediaQueryData = MediaQuery.of(context);
-    var screenHeight = _mediaQueryData.size.height;
-
     return Stack(
         fit: StackFit.loose,
         alignment: Alignment.bottomCenter,
         children: <Widget>[
           ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(45)),
-              child: Image.network(
-                movie.posterUrl,
-                errorBuilder: (BuildContext context, Object object,
-                    StackTrace stacktrace) {
-                  return Image.asset(
-                    "lib/assets/images/movie_placeholder.png",
-                    height: screenHeight - 180,
-                    fit: BoxFit.fill,
-                  );
-                },
-                height: screenHeight - 180,
-                fit: BoxFit.fill,
-              )
-              // CachedNetworkImage(
-              //     imageUrl: movie.posterUrl,
-              //     placeholder: (context, url) {
-              //       print(url.toString());
-              //
-              //       return Image.asset(
-              //         "lib/assets/images/movie_placeholder.png",
-              //         height: screenHeight - 180,
-              //         fit: BoxFit.fill,
-              //       );
-              //     }),
-              ),
+            borderRadius: BorderRadius.all(Radius.circular(45)),
+            child: CustomImage(
+                imageUrl: movie.posterUrl, isValidImage: movie.isImageValid),
+          ),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
@@ -73,18 +48,21 @@ class CarouselItem extends StatelessWidget {
                     child: Center(
                         child: Text(
                       movie.voteAverage.toString(),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ))),
-                onTap: () {
-                  _movieDetailController.fetchMovieDetail(movie.id).then(
-                        (movieDetails) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailsView(details: movieDetails))),
-                      );
-                },
+                // onTap: () {
+                //   _movieDetailController.fetchMovieDetail(movie.id).then(
+                //         (movieDetails) => Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (context) =>
+                //                     DetailsView(details: movieDetails),
+                //                 settings: RouteSettings(
+                //                     name: "isValid",
+                //                     arguments: movie.isImageValid))),
+                //       );
+                // },
                 title: Text(
                   movie.title,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
@@ -106,5 +84,34 @@ class CarouselItem extends StatelessWidget {
                 )),
           )
         ]);
+  }
+
+  customImage(context, String imageUrl, bool isValidImage) {
+    var _mediaQueryData = MediaQuery.of(context);
+    var screenHeight = _mediaQueryData.size.height;
+
+    String placeHolder = "lib/assets/images/movie_placeholder.png";
+
+    if (isValidImage == null) isValidImage = false;
+
+    return isValidImage
+        ? Image.network(
+            imageUrl,
+            errorBuilder:
+                (BuildContext context, Object object, StackTrace stacktrace) {
+              return Image.asset(
+                placeHolder,
+                height: screenHeight - 180,
+                fit: BoxFit.fill,
+              );
+            },
+            height: screenHeight - 180,
+            fit: BoxFit.fill,
+          )
+        : Image.asset(
+            placeHolder,
+            height: screenHeight - 180,
+            fit: BoxFit.fill,
+          );
   }
 }

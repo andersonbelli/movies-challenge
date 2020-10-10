@@ -22,6 +22,7 @@ class MovieModel {
   String posterUrl;
   List<String> genres;
   String releaseDate;
+  bool isImageValid;
 
   MovieModel(
       {this.id,
@@ -29,7 +30,8 @@ class MovieModel {
       this.title,
       this.posterUrl,
       this.genres,
-      this.releaseDate});
+      this.releaseDate,
+      this.isImageValid});
 
   MovieModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
