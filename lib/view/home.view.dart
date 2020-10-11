@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/carousel.component.dart';
 import 'components/search.component.dart';
 import 'details.view.dart';
+import 'favorites.view.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key, this.title}) : super(key: key);
@@ -17,7 +18,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _curIndex = 0;
 
-  final List<Widget> _children = [Carousel()];
+  final List<Widget> _children = [Carousel(), FavoritesView()];
 
   @override
   Widget build(BuildContext context) {
@@ -57,16 +58,13 @@ class _HomeViewState extends State<HomeView> {
           items: [
             BottomNavigationBarItem(
               backgroundColor: Colors.transparent,
-              icon: Icon(
-                Icons.home,
-              ),
+              icon: Icon(Icons.home),
               title: Text("Home", style: TextStyle(color: Colors.black87)),
             ),
             BottomNavigationBarItem(
               backgroundColor: Colors.transparent,
-              icon: Icon(Icons.list),
-              title:
-                  Text("Categories", style: TextStyle(color: Colors.black87)),
+              icon: Icon(Icons.favorite),
+              title: Text("Favorites", style: TextStyle(color: Colors.black87)),
             )
           ],
         ),
