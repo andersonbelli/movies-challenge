@@ -20,8 +20,6 @@ class MovieDetailController {
 
       var responseData = MovieDetailsModel.fromJson(response.data);
 
-      print(responseData.toJson());
-
       return responseData;
     } on DioError catch (e) {
       print("Error code: " +

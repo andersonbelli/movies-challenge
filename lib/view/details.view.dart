@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'components/CustomImage.dart';
+import 'components/custom_image.component.dart';
 import 'components/carousel_item.component.dart';
+import 'components/item_details.component.dart';
 
 class DetailsView extends StatefulWidget {
   final MovieDetailsModel details;
@@ -17,8 +19,26 @@ class DetailsView extends StatefulWidget {
   _DetailsViewState createState() => _DetailsViewState();
 }
 
-class _DetailsViewState extends State<DetailsView> {
+class _DetailsViewState extends State<DetailsView>
+    with SingleTickerProviderStateMixin {
   PanelController _panelController = new PanelController();
+
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +52,9 @@ class _DetailsViewState extends State<DetailsView> {
           boxShadow: [],
           panel: CustomPaint(
             painter: CurvePainter(),
-            child: Center(
-              child: Column(
-                children: [
-                  Text(widget.details.title),
-                  Text(widget.details.overview),
-                  Text(widget.details.popularity.toString()),
-                ],
-              ),
-            ),
+            child: Container(
+                child: ItemDetail(_panelController, _animationController,
+                    item: widget.details)),
           ),
           body: GestureDetector(
             child: Container(
@@ -53,8 +67,10 @@ class _DetailsViewState extends State<DetailsView> {
             onTap: () {
               if (_panelController.isPanelOpen) {
                 _panelController.close();
+                _animationController.forward();
               } else {
                 _panelController.open();
+                _animationController.reset();
               }
             },
           )),
@@ -66,7 +82,7 @@ class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Colors.green[800];
+    paint.color = Color.fromRGBO(248, 248, 255, 1);
     paint.style = PaintingStyle.fill;
 
     var path = Path();

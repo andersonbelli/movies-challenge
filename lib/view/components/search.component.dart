@@ -48,7 +48,7 @@ class _SearchFieldState extends State<SearchField> {
                   borderRadius: new BorderRadius.circular(20.0),
                   borderSide: BorderSide(
                       color: Color.lerp(
-                          Colors.deepPurple, Colors.transparent, 0.4),
+                          Colors.lightBlue, Colors.transparent, 0.4),
                       width: 1.5),
                 ),
                 hintText: "Search a movie",
@@ -62,7 +62,7 @@ class _SearchFieldState extends State<SearchField> {
                 child: IconButton(
                   icon: Icon(
                     Icons.search,
-                    color: _search ? Colors.deepPurple : Colors.grey,
+                    color: _search ? Colors.lightBlue : Colors.grey,
                   ),
                   splashRadius: 25,
                   onPressed: () {

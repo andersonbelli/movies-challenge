@@ -53,66 +53,69 @@ class Carousel extends StatelessWidget {
                 ),
               );
             } else {
-              return Swiper(
-                fade: 0.8,
-                loop: false,
-                autoplayDisableOnInteraction: true,
-                autoplayDelay: 5000,
-                itemBuilder: (BuildContext context, int index) {
-                  MovieModel item = snapshot.data[index];
+              return Container(
+                padding: const EdgeInsets.only(top: 5),
+                child: Swiper(
+                  fade: 0.8,
+                  loop: false,
+                  autoplayDisableOnInteraction: true,
+                  autoplayDelay: 5000,
+                  itemBuilder: (BuildContext context, int index) {
+                    MovieModel item = snapshot.data[index];
 
-                  return SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 5.0, bottom: 20),
-                      child: GestureDetector(
-                          onTap: () {
-                            _showLoading(context,
-                                title: "Loading...",
-                                message: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 100),
-                                    child: CircularProgressIndicator()),
-                                dismissible: false,
-                                buttonText: "cancel");
-
-                            _movieDetailController
-                                .fetchMovieDetail(item.id)
-                                .then(
-                              (movieDetails) {
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailsView(
-                                            details: movieDetails)));
-                              },
-                            ).timeout(Duration(seconds: 5), onTimeout: () {
+                    return SingleChildScrollView(
+                      physics: NeverScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5.0, bottom: 10),
+                        child: GestureDetector(
+                            onTap: () {
                               _showLoading(context,
-                                  title: "Something went wrong",
-                                  message: Text("Please, try again",
-                                      textAlign: TextAlign.center),
-                                  dismissible: true,
-                                  buttonText: "ok");
-                            });
-                          },
-                          child: CarouselItem(movie: item)),
-                    ),
-                  );
-                },
-                viewportFraction: 0.8,
-                scale: 0.9,
-                autoplay: true,
-                itemCount: snapshot.data.length,
-                pagination: new SwiperPagination(
-                    alignment: Alignment.bottomCenter,
-                    margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
-                    builder: new DotSwiperPaginationBuilder(
-                        color: Colors.black54,
-                        activeColor: Colors.black87,
-                        size: 10.0,
-                        activeSize: 15.0)),
-                // control: new SwiperControl(),
+                                  title: "Loading...",
+                                  message: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 100),
+                                      child: CircularProgressIndicator()),
+                                  dismissible: false,
+                                  buttonText: "cancel");
+
+                              _movieDetailController
+                                  .fetchMovieDetail(item.id)
+                                  .then(
+                                (movieDetails) {
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailsView(
+                                              details: movieDetails)));
+                                },
+                              ).timeout(Duration(seconds: 5), onTimeout: () {
+                                _showLoading(context,
+                                    title: "Something went wrong",
+                                    message: Text("Please, try again",
+                                        textAlign: TextAlign.center),
+                                    dismissible: true,
+                                    buttonText: "ok");
+                              });
+                            },
+                            child: CarouselItem(movie: item)),
+                      ),
+                    );
+                  },
+                  viewportFraction: 0.8,
+                  scale: 0.9,
+                  autoplay: true,
+                  itemCount: snapshot.data.length,
+                  pagination: new SwiperPagination(
+                      alignment: Alignment.bottomCenter,
+                      margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+                      builder: new DotSwiperPaginationBuilder(
+                          color: Colors.black54,
+                          activeColor: Colors.black87,
+                          size: 10.0,
+                          activeSize: 15.0)),
+                  // control: new SwiperControl(),
+                ),
               );
             }
             break;

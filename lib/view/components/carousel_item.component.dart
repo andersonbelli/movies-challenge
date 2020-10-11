@@ -8,7 +8,7 @@ import 'package:movies_challenge/model/movie.model.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import '../details.view.dart';
-import 'CustomImage.dart';
+import 'custom_image.component.dart';
 
 class CarouselItem extends StatelessWidget {
   final MovieModel movie;
@@ -17,73 +17,72 @@ class CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-        fit: StackFit.loose,
-        alignment: Alignment.bottomCenter,
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(45)),
-            child: CustomImage(
-                imageUrl: movie.posterUrl, isValidImage: movie.isImageValid),
-          ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+    return Container(
+      child: Stack(
+          fit: StackFit.loose,
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(45)),
+              child: CustomImage(
+                  imageUrl: movie.posterUrl, isValidImage: movie.isImageValid),
             ),
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListTile(
-                leading: Container(
-                    width: 55,
-                    height: double.maxFinite,
-                    decoration: BoxDecoration(
-                        //TODO change item rate color based on value
-                        color: Colors.blue[200],
-                        borderRadius: BorderRadius.circular(30.0),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black26,
-                              spreadRadius: 2,
-                              blurRadius: 6),
-                        ]),
-                    child: Center(
-                        child: Text(
-                      movie.voteAverage.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
-                    ))),
-                // onTap: () {
-                //   _movieDetailController.fetchMovieDetail(movie.id).then(
-                //         (movieDetails) => Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) =>
-                //                     DetailsView(details: movieDetails),
-                //                 settings: RouteSettings(
-                //                     name: "isValid",
-                //                     arguments: movie.isImageValid))),
-                //       );
-                // },
-                title: Text(
-                  movie.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-                subtitle: Text.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                      text: "release date: ",
-                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                    ),
-                    TextSpan(
-                      text: DateFormat("dd/MM/yyyy")
-                          .format(DateTime.parse(movie.releaseDate)),
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.6),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-                )),
-          )
-        ]);
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: ListTile(
+                  leading: Container(
+                      width: 55,
+                      height: double.maxFinite,
+                      decoration: BoxDecoration(
+                          //TODO change item rate color based on value
+                          color: Colors.lightBlue,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black26,
+                                spreadRadius: 2,
+                                blurRadius: 6),
+                          ]),
+                      child: Center(
+                          child: Text(
+                        movie.voteAverage.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                                color: Colors.black54,
+                                blurRadius: 5,
+                                offset: Offset(2, 2))
+                          ],
+                        ),
+                      ))),
+                  title: Text(
+                    movie.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  subtitle: Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                        text: "release date: ",
+                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                      ),
+                      TextSpan(
+                        text: DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(movie.releaseDate)),
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                  )),
+            )
+          ]),
+    );
   }
 
   customImage(context, String imageUrl, bool isValidImage) {
