@@ -23,14 +23,18 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color.fromRGBO(248, 248, 255, 1),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        titleSpacing: 40,
-        title: SearchField(),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   titleSpacing: 40,
+      //   title: SearchField(),
+      // ),
+      body: SafeArea(
+        child: Container(
+          child: _children[_curIndex],
+        ),
       ),
-      body: _children[_curIndex],
       // extendBody: true,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

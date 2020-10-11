@@ -4,6 +4,7 @@ import 'package:movies_challenge/controller/movie_detail.controller.dart';
 import 'package:movies_challenge/controller/movies_list.controller.dart';
 import 'package:movies_challenge/model/movie.model.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
+import 'package:movies_challenge/view/components/search.component.dart';
 
 import '../details.view.dart';
 import 'carousel_item.component.dart';
@@ -14,6 +15,10 @@ class Carousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _mediaQueryData = MediaQuery.of(context);
+    final _screenHeight = _mediaQueryData.size.height;
+    final _screenWidth = _mediaQueryData.size.width;
+
     return FutureBuilder(
       future: _moviesListController.fetchMovies(),
       builder: (context, snapshot) {
@@ -53,69 +58,86 @@ class Carousel extends StatelessWidget {
                 ),
               );
             } else {
-              return Container(
-                padding: const EdgeInsets.only(top: 5),
-                child: Swiper(
-                  fade: 0.8,
-                  loop: false,
-                  autoplayDisableOnInteraction: true,
-                  autoplayDelay: 5000,
-                  itemBuilder: (BuildContext context, int index) {
-                    MovieModel item = snapshot.data[index];
+              return Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Container(
+                          child: SearchField(),
+                        ),
+                      )),
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      child: Swiper(
+                        fade: 0.8,
+                        loop: true,
+                        autoplayDisableOnInteraction: true,
+                        autoplayDelay: 6000,
+                        viewportFraction: 0.4,
+                        scale: 0.2,
+                        autoplay: true,
+                        itemCount: snapshot.data.length,
+                        itemWidth: _screenWidth,
+                        itemHeight: _screenHeight - 150,
+                        layout: SwiperLayout.STACK,
+                        pagination: new SwiperPagination(
+                            alignment: Alignment.bottomCenter,
+                            // margin: new EdgeInsets.only(top: 5),
+                            builder: new DotSwiperPaginationBuilder(
+                                color: Colors.black54,
+                                activeColor: Colors.black87,
+                                size: 10.0,
+                                activeSize: 15.0)),
+                        // control: new SwiperControl(),
+                        itemBuilder: (BuildContext context, int index) {
+                          MovieModel item = snapshot.data[index];
+                          return SingleChildScrollView(
+                            physics: NeverScrollableScrollPhysics(),
+                            child: GestureDetector(
+                                onTap: () {
+                                  _showLoading(context,
+                                      title: "Loading...",
+                                      message: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 100),
+                                          child: CircularProgressIndicator()),
+                                      dismissible: false,
+                                      buttonText: "cancel");
 
-                    return SingleChildScrollView(
-                      physics: NeverScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10),
-                        child: GestureDetector(
-                            onTap: () {
-                              _showLoading(context,
-                                  title: "Loading...",
-                                  message: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 100),
-                                      child: CircularProgressIndicator()),
-                                  dismissible: false,
-                                  buttonText: "cancel");
-
-                              _movieDetailController
-                                  .fetchMovieDetail(item.id)
-                                  .then(
-                                (movieDetails) {
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailsView(
-                                              details: movieDetails)));
+                                  _movieDetailController
+                                      .fetchMovieDetail(item.id)
+                                      .then(
+                                    (movieDetails) {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => DetailsView(
+                                                  details: movieDetails),
+                                              settings: RouteSettings(
+                                                  arguments:
+                                                      item.isImageValid)));
+                                    },
+                                  ).timeout(Duration(seconds: 5),
+                                          onTimeout: () {
+                                    _showLoading(context,
+                                        title: "Something went wrong",
+                                        message: Text("Please, try again",
+                                            textAlign: TextAlign.center),
+                                        dismissible: true,
+                                        buttonText: "ok");
+                                  });
                                 },
-                              ).timeout(Duration(seconds: 5), onTimeout: () {
-                                _showLoading(context,
-                                    title: "Something went wrong",
-                                    message: Text("Please, try again",
-                                        textAlign: TextAlign.center),
-                                    dismissible: true,
-                                    buttonText: "ok");
-                              });
-                            },
-                            child: CarouselItem(movie: item)),
+                                child: CarouselItem(movie: item)),
+                          );
+                        },
                       ),
-                    );
-                  },
-                  viewportFraction: 0.8,
-                  scale: 0.9,
-                  autoplay: true,
-                  itemCount: snapshot.data.length,
-                  pagination: new SwiperPagination(
-                      alignment: Alignment.bottomCenter,
-                      margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-                      builder: new DotSwiperPaginationBuilder(
-                          color: Colors.black54,
-                          activeColor: Colors.black87,
-                          size: 10.0,
-                          activeSize: 15.0)),
-                  // control: new SwiperControl(),
-                ),
+                    ),
+                  ),
+                ],
               );
             }
             break;

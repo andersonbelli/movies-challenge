@@ -17,7 +17,13 @@ class CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _mediaQueryData = MediaQuery.of(context);
+    final _screenHeight = _mediaQueryData.size.height;
+    final _screenWidth = _mediaQueryData.size.width;
+
     return Container(
+      height: _screenHeight - 245,
+      margin: const EdgeInsets.only(bottom: 4, left: 15, right: 15),
       child: Stack(
           fit: StackFit.loose,
           alignment: Alignment.bottomCenter,
@@ -31,11 +37,13 @@ class CarouselItem extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.only(
+                  left: 16, right: 16, top: 20),
               child: ListTile(
                   leading: Container(
                       width: 55,
-                      height: double.maxFinite,
+                      height: 55,
+                      // height: double.maxFinite,
                       decoration: BoxDecoration(
                           //TODO change item rate color based on value
                           color: Colors.lightBlue,
@@ -83,34 +91,5 @@ class CarouselItem extends StatelessWidget {
             )
           ]),
     );
-  }
-
-  customImage(context, String imageUrl, bool isValidImage) {
-    var _mediaQueryData = MediaQuery.of(context);
-    var screenHeight = _mediaQueryData.size.height;
-
-    String placeHolder = "lib/assets/images/movie_placeholder.png";
-
-    if (isValidImage == null) isValidImage = false;
-
-    return isValidImage
-        ? Image.network(
-            imageUrl,
-            errorBuilder:
-                (BuildContext context, Object object, StackTrace stacktrace) {
-              return Image.asset(
-                placeHolder,
-                height: screenHeight - 180,
-                fit: BoxFit.fill,
-              );
-            },
-            height: screenHeight - 180,
-            fit: BoxFit.fill,
-          )
-        : Image.asset(
-            placeHolder,
-            height: screenHeight - 180,
-            fit: BoxFit.fill,
-          );
   }
 }

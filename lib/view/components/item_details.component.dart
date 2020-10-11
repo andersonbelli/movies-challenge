@@ -9,7 +9,8 @@ class ItemDetail extends StatefulWidget {
   final PanelController _panelController;
   final AnimationController _animationController;
 
-  const ItemDetail(this._panelController, this._animationController, {Key key, this.item})
+  const ItemDetail(this._panelController, this._animationController,
+      {Key key, this.item})
       : super(key: key);
 
   @override
@@ -18,9 +19,10 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail>
     with SingleTickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
+    print("\n\n\nAGUIII");
+    print(widget.item.tagline.toString());
 
     return Container(
       width: double.maxFinite,
@@ -33,7 +35,8 @@ class _ItemDetailState extends State<ItemDetail>
             padding: const EdgeInsets.all(0),
             margin: const EdgeInsets.all(0),
             child: RotationTransition(
-              turns: Tween(begin: 0.0, end: 0.5).animate(widget._animationController),
+              turns: Tween(begin: 0.0, end: 0.5)
+                  .animate(widget._animationController),
               child: IconButton(
                 icon: Icon(
                   Icons.keyboard_arrow_down_outlined,
@@ -124,7 +127,7 @@ class _ItemDetailState extends State<ItemDetail>
             ),
           ),
           Expanded(
-              flex: 3,
+              flex: widget.item.tagline != "" ? 3 : 2,
               child: Container(
                 width: double.maxFinite,
                 child: RichText(
@@ -144,7 +147,8 @@ class _ItemDetailState extends State<ItemDetail>
                             children: [
                               TextSpan(text: "Release date: "),
                               TextSpan(
-                                  text: widget.item.releaseDate,
+                                  text: DateFormat("dd/MM/yyyy").format(
+                                      DateTime.parse(widget.item.releaseDate)),
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                             ],
@@ -160,19 +164,21 @@ class _ItemDetailState extends State<ItemDetail>
                                       TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
-                          TextSpan(
-                            text: "\n\n",
-                            children: [
-                              TextSpan(text: "Tagline: "),
-                              TextSpan(
-                                text: "\"${widget.item.tagline}\"",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey[800],
-                                    fontStyle: FontStyle.italic),
-                              ),
-                            ],
-                          ),
+                          widget.item.tagline != ""
+                              ? TextSpan(
+                                  text: "\n\n",
+                                  children: [
+                                    TextSpan(text: "Tagline: "),
+                                    TextSpan(
+                                      text: "\"${widget.item.tagline}\"",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey[800],
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ],
+                                )
+                              : TextSpan(),
                         ])),
               )),
           Expanded(
@@ -181,17 +187,19 @@ class _ItemDetailState extends State<ItemDetail>
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Container(
                     width: double.maxFinite,
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: "Overview\n\n",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w700)),
-                          TextSpan(
-                              text: widget.item.overview,
-                              style: TextStyle(color: Colors.black87)),
-                        ],
+                    child: SingleChildScrollView(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: "Overview\n\n",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w700)),
+                            TextSpan(
+                                text: widget.item.overview,
+                                style: TextStyle(color: Colors.black87)),
+                          ],
+                        ),
                       ),
                     )),
               )),
