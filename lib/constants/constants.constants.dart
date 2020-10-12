@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static String BASEURL = "https://desafio-mobile.nyc3.digitaloceanspaces.com/";
-  static String MOVIESURL = "movies";
+  static final String BASE_URL = "https://desafio-mobile.nyc3.digitaloceanspaces.com/";
+  static final String MOVIES_URL = "movies";
+
+  static final String PLACE_HOLDER_IMAGE = "lib/assets/images/movie_placeholder.png";
 
   static Map<int, Color> mainColor = {
     50: Color.fromRGBO(40, 121, 254, .1),

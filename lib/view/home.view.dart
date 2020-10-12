@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_challenge/constants/constants.constants.dart';
 
 import 'components/carousel.component.dart';
-import 'components/search.component.dart';
-import 'details.view.dart';
 import 'favorites.view.dart';
 
 class HomeView extends StatefulWidget {
@@ -25,26 +22,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      // backgroundColor: Color.fromRGBO(248, 248, 255, 1),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   title: Text(
-      //     "Movies Challenge",
-      //     style: TextStyle(
-      //         color: Colors.black87,
-      //         fontSize: 45,
-      //         fontFamily: "Friday13",
-      //         shadows: [
-      //           Shadow(
-      //             offset: Offset(2, 2),
-      //             color: Colors.black12,
-      //             blurRadius: 5,
-      //           )
-      //         ]),
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -52,7 +29,6 @@ class _HomeViewState extends State<HomeView> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomLeft,
-                  // colors: [Colors.purple[700], Colors.blue[400]])),
                   colors: [
                 Colors.blueGrey[700],
                 Colors.indigo[800],
@@ -61,12 +37,10 @@ class _HomeViewState extends State<HomeView> {
           child: SafeArea(
             child: Flex(
               direction: Axis.vertical,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(top: 25, left: 25),
-                    // color: Colors.green,
                     width: double.maxFinite,
                     child: Text(
                       "My Movies",
@@ -109,8 +83,8 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: Colors.transparent,
           selectedIconTheme: IconThemeData(size: 35),
           showUnselectedLabels: true,
-          // selectedItemColor: Colors.black87,
-          selectedItemColor: Color.fromRGBO(242, 99, 112, 1),
+          // selectedItemColor: Color.fromRGBO(242, 99, 112, 1),
+          selectedItemColor: Colors.green[400],
           unselectedIconTheme: IconThemeData(color: Colors.black54),
           unselectedLabelStyle: TextStyle(color: Colors.black54),
           type: BottomNavigationBarType.shifting,

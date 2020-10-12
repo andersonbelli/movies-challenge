@@ -1,13 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'components/custom_image.component.dart';
-import 'components/carousel_item.component.dart';
 import 'components/item_details.component.dart';
 
 class DetailsView extends StatefulWidget {
@@ -42,7 +38,8 @@ class _DetailsViewState extends State<DetailsView>
 
   @override
   Widget build(BuildContext context) {
-    final _carouselItem = ModalRoute.of(context).settings.arguments;
+    final Map<String, dynamic> _carouselItem =
+        ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       body: SlidingUpPanel(
@@ -53,8 +50,13 @@ class _DetailsViewState extends State<DetailsView>
           panel: CustomPaint(
             painter: CurvePainter(),
             child: Container(
-                child: ItemDetail(_panelController, _animationController,
-                    item: widget.details)),
+                child: ItemDetail(
+              _panelController,
+              _animationController,
+              item: widget.details,
+              isFavorite: _carouselItem["isFavorite"],
+                  isImageValid: _carouselItem["isImageValid"],
+            )),
           ),
           body: GestureDetector(
             child: Container(
@@ -62,7 +64,7 @@ class _DetailsViewState extends State<DetailsView>
               padding: const EdgeInsets.only(bottom: 25),
               child: CustomImage(
                   imageUrl: widget.details.posterUrl,
-                  isValidImage: _carouselItem),
+                  isValidImage: _carouselItem["isImageValid"]),
             ),
             onTap: () {
               if (_panelController.isPanelOpen) {

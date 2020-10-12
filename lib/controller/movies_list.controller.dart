@@ -15,7 +15,7 @@ class MoviesListController {
   Future<List<MovieModel>> fetchMovies() async {
     try {
       Response response =
-          await _dio.get("${Constants.BASEURL}${Constants.MOVIESURL}");
+          await _dio.get("${Constants.BASE_URL}${Constants.MOVIES_URL}");
 
       var responseData = response.data;
 
@@ -45,8 +45,6 @@ class MoviesListController {
   static Future<bool> validateImage(String imageUrl) async {
     try {
       Response response = await _dio.get(imageUrl);
-      var responseData = response.data;
-
       if (response.data.toString().contains("<h1>File not Found</h1>"))
         return false;
 

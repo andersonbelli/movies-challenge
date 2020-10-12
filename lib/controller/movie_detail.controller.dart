@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:movies_challenge/constants/constants.constants.dart';
-import 'package:movies_challenge/model/movie.model.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 
 class MovieDetailController {
@@ -14,7 +13,7 @@ class MovieDetailController {
   Future<MovieDetailsModel> fetchMovieDetail(int id) async {
     try {
       Response response =
-          await _dio.get("${Constants.BASEURL}${Constants.MOVIESURL}/$id");
+          await _dio.get("${Constants.BASE_URL}${Constants.MOVIES_URL}/$id");
 
       // print("Details data: ${response.data} \n\n");
 

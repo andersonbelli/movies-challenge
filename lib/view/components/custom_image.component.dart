@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movies_challenge/constants/constants.constants.dart';
 
 class CustomImage extends StatelessWidget {
-  final String _placeHolder = "lib/assets/images/movie_placeholder.png";
-
   final String imageUrl;
   final bool isValidImage;
 
@@ -16,28 +15,41 @@ class CustomImage extends StatelessWidget {
 
     return isValidImage != null
         ? isValidImage
-            ? Image.network(
-                imageUrl,
-                errorBuilder: (BuildContext context, Object object,
-                    StackTrace stacktrace) {
-                  return Image.asset(
-                    _placeHolder,
-                    height: _screenHeight,
-                    fit: BoxFit.fill,
-                  );
-                },
-                height: _screenHeight,
-                fit: BoxFit.fill,
+            ? Container(
+                // color: Colors.black,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment(9, 7),
+                  colors: [
+                    Colors.black,
+                    Colors.grey[600],
+                    Colors.black,
+                  ],
+                )),
+                child: Image.network(
+                  imageUrl,
+                  errorBuilder: (BuildContext context, Object object,
+                      StackTrace stacktrace) {
+                    return Image.asset(
+                      Constants.PLACE_HOLDER_IMAGE,
+                      height: _screenHeight,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                  height: _screenHeight,
+                  fit: BoxFit.fitHeight,
+                ),
               )
             : Image.asset(
-                _placeHolder,
+                Constants.PLACE_HOLDER_IMAGE,
                 height: _screenHeight,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               )
         : Image.asset(
-            _placeHolder,
+            Constants.PLACE_HOLDER_IMAGE,
             height: _screenHeight,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           );
   }
 }

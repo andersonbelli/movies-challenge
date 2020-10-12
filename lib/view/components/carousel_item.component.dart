@@ -1,13 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movies_challenge/controller/movie_detail.controller.dart';
-import 'package:movies_challenge/controller/movies_list.controller.dart';
 import 'package:movies_challenge/model/movie.model.dart';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
-import '../details.view.dart';
 import 'custom_image.component.dart';
 
 class CarouselItem extends StatelessWidget {
@@ -73,8 +67,8 @@ class CarouselItem extends StatelessWidget {
                             // height: double.maxFinite,
                             decoration: BoxDecoration(
                                 //TODO change item rate color based on value
-                                // color: Colors.lightBlue,
-                                color: Color.fromRGBO(242, 99, 112, 1),
+                                // color: Color.fromRGBO(242, 99, 112, 1),
+                                color: Colors.green[400],
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(

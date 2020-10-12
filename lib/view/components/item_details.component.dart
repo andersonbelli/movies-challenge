@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movies_challenge/constants/constants.constants.dart';
+import 'package:movies_challenge/controller/movies_list.controller.dart';
+import 'package:movies_challenge/database/dao/favorites.database.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ItemDetail extends StatefulWidget {
   final MovieDetailsModel item;
 
+  final bool isFavorite;
+  final bool isImageValid;
+
   final PanelController _panelController;
   final AnimationController _animationController;
 
   const ItemDetail(this._panelController, this._animationController,
-      {Key key, this.item})
+      {Key key, this.item, this.isFavorite = false, this.isImageValid = false})
       : super(key: key);
 
   @override
@@ -21,8 +27,10 @@ class _ItemDetailState extends State<ItemDetail>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    print("\n\n\nAGUIII");
-    print(widget.item.tagline.toString());
+    IconData _favIcon = Icons.favorite_border;
+    widget.isFavorite
+        ? _favIcon = Icons.favorite
+        : _favIcon = Icons.favorite_border;
 
     return Container(
       width: double.maxFinite,
@@ -57,29 +65,83 @@ class _ItemDetailState extends State<ItemDetail>
           ),
           Expanded(
             flex: 1,
-            child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                itemCount: widget.item.genres.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, int index) {
-                  return Container(
-                    height: 5,
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    margin: const EdgeInsets.only(right: 5),
-                    child: Center(
-                        child: Text(
-                      widget.item.genres[index],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
-                    )),
-                    decoration: BoxDecoration(
-                        // shape: BoxShape.rectangle,
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                  );
-                }),
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child:
+                        // Text(":D"),
+                        ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            itemCount: widget.item.genres.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, int index) {
+                              return Container(
+                                height: 5,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Center(
+                                    child: Text(
+                                  widget.item.genres[index],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                                decoration: BoxDecoration(
+                                    // shape: BoxShape.rectangle,
+                                    color: Colors.black26,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                              );
+                            }),
+                  ),
+                ),
+                Expanded(
+                  child: Material(
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      splashColor: Colors.red,
+                      splashRadius: 18,
+                      icon: Icon(
+                        _favIcon,
+                        size: 45,
+                        color: Color.fromRGBO(242, 99, 112, 1),
+                      ),
+                      onPressed: () {
+                        if (!widget.isFavorite) {
+                          FavoritesDatabase favoritesDatabase =
+                              new FavoritesDatabase();
+
+                          favoritesDatabase
+                              .save(
+                                  widget.item.id,
+                                  widget.item.title,
+                                  widget.item.voteAverage.toString(),
+                                  widget.isImageValid
+                                      ? widget.item.posterUrl
+                                      : Constants.PLACE_HOLDER_IMAGE)
+                              .then((value) {
+                            print("\n Saved! ID: " + value.toString());
+                            if (value.runtimeType.toString() == "int") {
+                              setState(() {
+                                _favIcon = Icons.favorite;
+                              });
+                            }
+                          });
+                        } else {
+                          print("Remove favorite");
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 3,
@@ -113,7 +175,8 @@ class _ItemDetailState extends State<ItemDetail>
                           fontSize: 24),
                     )),
                     decoration: BoxDecoration(
-                        color: Color.fromRGBO(242, 99, 112, 1),
+                        // color: Color.fromRGBO(242, 99, 112, 1),
+                        color: Colors.green[400],
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
