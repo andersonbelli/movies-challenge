@@ -113,7 +113,7 @@ class _ItemDetailState extends State<ItemDetail>
                           fontSize: 24),
                     )),
                     decoration: BoxDecoration(
-                        color: Colors.lightBlue,
+                        color: Color.fromRGBO(242, 99, 112, 1),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(

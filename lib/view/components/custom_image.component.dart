@@ -12,7 +12,7 @@ class CustomImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _mediaQueryData = MediaQuery.of(context);
-    final _screenHeight = _mediaQueryData.size.height - 230;
+    final _screenHeight = _mediaQueryData.size.height;
 
     return isValidImage != null
         ? isValidImage

@@ -26,7 +26,7 @@ class Carousel extends StatelessWidget {
           case ConnectionState.none:
             break;
           case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator());
+            return Container(child: Center(child: CircularProgressIndicator()));
             break;
           case ConnectionState.active:
             break;
@@ -58,36 +58,31 @@ class Carousel extends StatelessWidget {
                 ),
               );
             } else {
-              return Flex(
-                direction: Axis.vertical,
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Container(
-                          child: SearchField(),
-                        ),
-                      )),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: _screenHeight - 250,
+                      // height: double.maxFinite,
                       child: Swiper(
                         fade: 0.8,
                         loop: true,
                         autoplayDisableOnInteraction: true,
                         autoplayDelay: 6000,
-                        viewportFraction: 0.4,
-                        scale: 0.2,
+                        viewportFraction: 0.6,
+                        scale: 0.1,
                         autoplay: true,
                         itemCount: snapshot.data.length,
                         itemWidth: _screenWidth,
-                        itemHeight: _screenHeight - 150,
+                        itemHeight: _screenHeight - 250,
                         layout: SwiperLayout.STACK,
                         pagination: new SwiperPagination(
                             alignment: Alignment.bottomCenter,
                             // margin: new EdgeInsets.only(top: 5),
                             builder: new DotSwiperPaginationBuilder(
-                                color: Colors.black54,
+                                // color: Colors.black54,
+                                color: Color.fromRGBO(242, 99, 112, 0.2),
                                 activeColor: Colors.black87,
                                 size: 10.0,
                                 activeSize: 15.0)),
@@ -103,7 +98,10 @@ class Carousel extends StatelessWidget {
                                       message: Container(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 100),
-                                          child: CircularProgressIndicator()),
+                                          child: CircularProgressIndicator(
+                                            backgroundColor:
+                                                Color.fromRGBO(242, 99, 112, 1),
+                                          )),
                                       dismissible: false,
                                       buttonText: "cancel");
 
@@ -136,13 +134,13 @@ class Carousel extends StatelessWidget {
                         },
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }
             break;
         }
-        return Text("Nothing to see here 🤔");
+        return Center(child: Text("Nothing to see here 🤔"));
       },
     );
   }

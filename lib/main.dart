@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Movies Challenge',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: MaterialColor(0xFF880E4F, Constants.mainColor),
+        primarySwatch: MaterialColor(0xFF880E4F, Constants.customWhite),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeView(
