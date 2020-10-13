@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:movies_challenge/controller/feature/save_file.controller.dart';
+import 'package:image_downloader/image_downloader.dart';
+import 'package:movies_challenge/constants/constants.constants.dart';
 import 'package:movies_challenge/model/movie.model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -25,25 +26,47 @@ class FavoritesDatabase {
       String movieImage) async {
     final Database db = await getDatabase();
 
-    return SaveFile.saveNetworkImage(movieImage).then((imageSavedPath) {
-      return db.insert(_favoritesTable, {
-        "id": movieId,
-        "title": movieTitle,
-        "voteAverage": movieRate,
-        "posterUrl": imageSavedPath,
-      });
+    var path;
+
+    try {
+      var imageId = await ImageDownloader.downloadImage(movieImage);
+
+      var fileName = await ImageDownloader.findName(imageId);
+      path = await ImageDownloader.findPath(imageId);
+      var size = await ImageDownloader.findByteSize(imageId);
+      var mimeType = await ImageDownloader.findMimeType(imageId);
+
+      print("fileName:   +++++++ $fileName");
+      print("path:   +++++++ $path");
+    } catch (error) {
+      print(error);
+    }
+
+    if (path == null) path = Constants.PLACE_HOLDER_IMAGE;
+
+    print("\n\nsalvo!");
+
+    return db.insert(_favoritesTable, {
+      "id": movieId,
+      "title": movieTitle,
+      "voteAverage": movieRate,
+      "posterUrl": path,
     });
+
+    print("----------------------");
+  }
+
+  Future<int> delete(int movieId) async {
+    final Database db = await getDatabase();
+
+    return db.delete(_favoritesTable, where: "id = $movieId");
   }
 
   Future<bool> verifyFavorite(int movieId) async {
     final Database db = await getDatabase();
 
-    final List<Map<String, dynamic>> result =
-        await db.query(_favoritesTable, columns: ["id"], where: "id = $movieId");
-
-    print("\n\n\nFavorite id result: " + result.toString());
-    print("\n\n\nFavorite id result: " + result.length.toString());
-    // Favorite id result: [{id: 238}]
+    final List<Map<String, dynamic>> result = await db.query(_favoritesTable,
+        columns: ["id"], where: "id = $movieId");
 
     return result.length != 0 ? true : false;
   }
@@ -52,8 +75,6 @@ class FavoritesDatabase {
     final Database db = await getDatabase();
 
     final List<Map<String, dynamic>> result = await db.query(_favoritesTable);
-
-    print("\n\n\nresulaaaaaaaa: " + result.toString());
 
     List<MovieModel> favorites = List();
 
@@ -64,8 +85,6 @@ class FavoritesDatabase {
           voteAverage: element["voteAverage"],
           posterUrl: element["posterUrl"]));
     });
-
-    print("\n\n\nbbbbbbbbbbbr: " + favorites.length.toString());
 
     return favorites.length != 0 ? favorites : null;
   }

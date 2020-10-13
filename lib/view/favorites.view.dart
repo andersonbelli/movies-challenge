@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_downloader/image_downloader.dart';
+import 'package:movies_challenge/constants/constants.constants.dart';
 import 'package:movies_challenge/database/dao/favorites.database.dart';
 import 'package:movies_challenge/model/movie.model.dart';
 
@@ -14,15 +18,14 @@ class FavoritesView extends StatelessWidget {
             case ConnectionState.none:
               break;
             case ConnectionState.waiting:
-              return CircularProgressIndicator(
-                  backgroundColor: Color.fromRGBO(242, 99, 112, 1));
+              return Center(
+                child: CircularProgressIndicator(
+                    backgroundColor: Color.fromRGBO(242, 99, 112, 1)),
+              );
               break;
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              print("sn " + snapshot.toString());
-              print("snda " + snapshot.data.toString());
-
               if (snapshot.data != null) {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
@@ -30,7 +33,28 @@ class FavoritesView extends StatelessWidget {
                       print("\n\nindex: " + index.toString());
 
                       MovieModel item = snapshot.data[index];
-                      return Text(item.title);
+
+                      print("title" + item.title);
+                      print("voteAverage" + item.voteAverage.toString());
+                      print("posterUrl  ++  " + item.posterUrl.toString());
+
+                      return ListTile(
+                        title: Text(item.title),
+                        subtitle: Text(item.voteAverage.toString()),
+                        leading: item.posterUrl == null
+                            ? Image.asset(Constants.PLACE_HOLDER_IMAGE)
+                            : Image.file(new File(item.posterUrl)),
+                      );
+
+                      // var image = new File.fromUri(File(item.posterUrl).uri);
+                      //
+                      // return ListTile(
+                      //   title: Text(item.title),
+                      //   subtitle: Text(item.voteAverage.toString()),
+                      //   leading: Image.file(File(item.posterUrl != null
+                      //       ? item.posterUrl
+                      //       : Constants.PLACE_HOLDER_IMAGE)),
+                      // );
                     });
               } else {
                 return Center(

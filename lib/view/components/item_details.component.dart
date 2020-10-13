@@ -25,13 +25,20 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail>
     with SingleTickerProviderStateMixin {
+  final FavoritesDatabase _favoritesDatabase = new FavoritesDatabase();
+  IconData _favIcon = Icons.favorite_border;
+
   @override
-  Widget build(BuildContext context) {
-    IconData _favIcon = Icons.favorite_border;
+  void initState() {
     widget.isFavorite
         ? _favIcon = Icons.favorite
         : _favIcon = Icons.favorite_border;
 
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.only(left: 15, right: 15),
@@ -108,16 +115,13 @@ class _ItemDetailState extends State<ItemDetail>
                       splashColor: Colors.red,
                       splashRadius: 18,
                       icon: Icon(
-                        _favIcon,
+                        this._favIcon,
                         size: 45,
                         color: Color.fromRGBO(242, 99, 112, 1),
                       ),
                       onPressed: () {
-                        if (!widget.isFavorite) {
-                          FavoritesDatabase favoritesDatabase =
-                              new FavoritesDatabase();
-
-                          favoritesDatabase
+                        if (this._favIcon != Icons.favorite) {
+                          _favoritesDatabase
                               .save(
                                   widget.item.id,
                                   widget.item.title,
@@ -129,12 +133,14 @@ class _ItemDetailState extends State<ItemDetail>
                             print("\n Saved! ID: " + value.toString());
                             if (value.runtimeType.toString() == "int") {
                               setState(() {
-                                _favIcon = Icons.favorite;
+                                this._favIcon = Icons.favorite;
                               });
                             }
                           });
                         } else {
                           print("Remove favorite");
+
+                          _showDialog(context);
                         }
                       },
                     ),
@@ -269,5 +275,40 @@ class _ItemDetailState extends State<ItemDetail>
         ],
       ),
     );
+  }
+
+  _showDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Remove from favorites?", textAlign: TextAlign.center),
+            content: Text(
+                "Would you like to remove this movies from your favorites?"),
+            actions: [
+              RaisedButton(
+                  color: Colors.green[400],
+                  textColor: Colors.white,
+                  child: Text("No"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              FlatButton(
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    _favoritesDatabase.delete(widget.item.id).then((value) {
+                      print("\n Removed! Response: " + value.toString());
+                      setState(() {
+                        this._favIcon = Icons.favorite_border;
+                      });
+                      Navigator.of(context).pop();
+                    });
+                  }),
+            ],
+          );
+        });
   }
 }

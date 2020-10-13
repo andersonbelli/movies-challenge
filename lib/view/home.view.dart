@@ -6,10 +6,6 @@ import 'components/carousel.component.dart';
 import 'favorites.view.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _HomeViewState createState() => new _HomeViewState();
 }
@@ -30,10 +26,10 @@ class _HomeViewState extends State<HomeView> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomLeft,
                   colors: [
-                Colors.blueGrey[700],
-                Colors.indigo[800],
-                Colors.blueGrey[900],
-              ])),
+                    Colors.blueGrey[700],
+                    Colors.indigo[800],
+                    Colors.blueGrey[900],
+                  ])),
           child: SafeArea(
             child: Flex(
               direction: Axis.vertical,
