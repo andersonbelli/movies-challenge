@@ -6,7 +6,6 @@ import 'package:movies_challenge/database/dao/favorites.database.dart';
 import 'package:movies_challenge/model/movie_details.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-
 class ItemDetail extends StatefulWidget {
   final MovieDetailsModel item;
 
@@ -81,32 +80,32 @@ class _ItemDetailState extends State<ItemDetail>
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     child:
-                    // Text(":D"),
-                    ListView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        itemCount: widget.item.genres.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, int index) {
-                          return Container(
-                            height: 5,
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 5),
-                            margin: const EdgeInsets.only(right: 5),
-                            child: Center(
-                                child: Text(
+                        // Text(":D"),
+                        ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            itemCount: widget.item.genres.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, int index) {
+                              return Container(
+                                height: 5,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Center(
+                                    child: Text(
                                   widget.item.genres[index],
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 )),
-                            decoration: BoxDecoration(
-                              // shape: BoxShape.rectangle,
-                                color: Colors.black26,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(5))),
-                          );
-                        }),
+                                decoration: BoxDecoration(
+                                    // shape: BoxShape.rectangle,
+                                    color: Colors.black26,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                              );
+                            }),
                   ),
                 ),
                 Expanded(
@@ -123,38 +122,36 @@ class _ItemDetailState extends State<ItemDetail>
                       onPressed: () {
                         if (this._favIcon != Icons.favorite) {
                           Constants.showLoading(context,
-                              title: "Adding to favorites, please wait...",
+                              title: "Adding to favorites\nplease wait...",
                               message: Container(
+                                  height: 100,
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 100),
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Color.fromRGBO(
-                                        242, 99, 112, 1),
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor:
+                                          Color.fromRGBO(242, 99, 112, 1),
+                                    ),
                                   )),
                               dismissible: false,
                               buttonText: null);
 
                           _favoritesDatabase
                               .save(
-                              widget.item.id,
-                              widget.item.title,
-                              widget.item.voteAverage.toString(),
-                              widget.isImageValid
-                                  ? widget.item.posterUrl
-                                  : Constants.PLACE_HOLDER_IMAGE)
+                                  widget.item.id,
+                                  widget.item.title,
+                                  widget.item.voteAverage.toString(),
+                                  widget.isImageValid
+                                      ? widget.item.posterUrl
+                                      : Constants.PLACE_HOLDER_IMAGE)
                               .then((value) {
-                            print("\n Saved! ID: " + value.toString());
-                            if (value.runtimeType.toString() == "int") {
-                              setState(() {
-                                this._favIcon = Icons.favorite;
-                              });
-                            }
+                            setState(() {
+                              this._favIcon = Icons.favorite;
+                            });
                             Navigator.pop(context);
                           });
                         } else {
-                          print("Remove favorite");
-
-                          _showDialog(context);
+                          _showRemoveFavoriteDialog(context);
                         }
                       },
                     ),
@@ -182,20 +179,20 @@ class _ItemDetailState extends State<ItemDetail>
                     margin: const EdgeInsets.all(10),
                     child: Center(
                         child: Text(
-                          widget.item.voteAverage.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              shadows: [
-                                Shadow(
-                                    color: Colors.black87,
-                                    blurRadius: 5,
-                                    offset: Offset(2, 2))
-                              ],
-                              fontSize: 24),
-                        )),
+                      widget.item.voteAverage.toString(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                                color: Colors.black87,
+                                blurRadius: 5,
+                                offset: Offset(2, 2))
+                          ],
+                          fontSize: 24),
+                    )),
                     decoration: BoxDecoration(
-                      // color: Color.fromRGBO(242, 99, 112, 1),
+                        // color: Color.fromRGBO(242, 99, 112, 1),
                         color: Colors.green[400],
                         shape: BoxShape.circle,
                         boxShadow: [
@@ -233,7 +230,7 @@ class _ItemDetailState extends State<ItemDetail>
                                   text: DateFormat("dd/MM/yyyy").format(
                                       DateTime.parse(widget.item.releaseDate)),
                                   style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                           TextSpan(
@@ -242,25 +239,26 @@ class _ItemDetailState extends State<ItemDetail>
                             children: [
                               TextSpan(text: "Runtime: "),
                               TextSpan(
-                                  text: widget.item.runtime.toString() + " minutes",
+                                  text: widget.item.runtime.toString() +
+                                      " minutes",
                                   style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                           widget.item.tagline != ""
                               ? TextSpan(
-                            text: "\n\n",
-                            children: [
-                              TextSpan(text: "Tagline: "),
-                              TextSpan(
-                                text: "\"${widget.item.tagline}\"",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey[800],
-                                    fontStyle: FontStyle.italic),
-                              ),
-                            ],
-                          )
+                                  text: "\n\n",
+                                  children: [
+                                    TextSpan(text: "Tagline: "),
+                                    TextSpan(
+                                      text: "\"${widget.item.tagline}\"",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey[800],
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ],
+                                )
                               : TextSpan(),
                         ])),
               )),
@@ -291,7 +289,7 @@ class _ItemDetailState extends State<ItemDetail>
     );
   }
 
-  _showDialog(BuildContext context) {
+  _showRemoveFavoriteDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -314,7 +312,6 @@ class _ItemDetailState extends State<ItemDetail>
                   ),
                   onPressed: () {
                     _favoritesDatabase.delete(widget.item.id).then((value) {
-                      print("\n Removed! Response: " + value.toString());
                       setState(() {
                         this._favIcon = Icons.favorite_border;
                       });

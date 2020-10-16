@@ -57,9 +57,10 @@ class FavoritesDatabase {
     final Database db = await getDatabase();
 
     MovieModel movie = await findSaved(movieId);
-
-    final dir = Directory(movie.posterUrl);
-    dir.deleteSync(recursive: true);
+    if (movie.posterUrl != Constants.PLACE_HOLDER_IMAGE) {
+      final dir = Directory(movie.posterUrl);
+      dir.deleteSync(recursive: true);
+    }
 
     return db.delete(_favoritesTable, where: "id = $movieId");
   }

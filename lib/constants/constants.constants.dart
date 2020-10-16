@@ -28,7 +28,7 @@ class Constants {
             title: Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(color: Colors.black87),
             ),
             content: message,
             actions: [
