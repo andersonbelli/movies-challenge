@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:movies_challenge/constants/constants.constants.dart';
 import 'package:movies_challenge/controller/movie_detail.controller.dart';
 import 'package:movies_challenge/controller/movies_list.controller.dart';
 import 'package:movies_challenge/database/dao/favorites.database.dart';
@@ -8,8 +9,14 @@ import 'package:movies_challenge/model/movie.model.dart';
 import '../details.view.dart';
 import 'carousel_item.component.dart';
 
-class Carousel extends StatelessWidget {
+class Carousel extends StatefulWidget {
+  @override
+  _CarouselState createState() => _CarouselState();
+}
+
+class _CarouselState extends State<Carousel> {
   final MoviesListController _moviesListController = MoviesListController();
+
   final MovieDetailController _movieDetailController = MovieDetailController();
 
   @override
@@ -41,21 +48,21 @@ class Carousel extends StatelessWidget {
                   children: <Widget>[
                     Text("Ops, something went wrong :(\n",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black87, fontSize: 16)),
-                    Icon(Icons.cloud_off, color: Colors.black54, size: 30.0),
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    Icon(Icons.cloud_off, color: Colors.grey, size: 30.0),
                     Text("\n Verify your connection and try again\n",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black54, fontSize: 14)),
+                        style: TextStyle(color: Colors.white, fontSize: 14)),
                     FlatButton(
-                        color: Colors.black87,
+                        color: Colors.blue,
                         child: Text("TRY AGAIN",
-                            style: TextStyle(fontSize: 12, color: Colors.blue)),
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.black)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         onPressed: () {
-                          // TODO try again
-                          print("try again");
+                          setState(() {});
                         })
                   ],
                 ),
@@ -98,7 +105,7 @@ class Carousel extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               child: GestureDetector(
                                   onTap: () {
-                                    _showLoading(context,
+                                    Constants.showLoading(context,
                                         title: "Loading...",
                                         message: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -128,17 +135,17 @@ class Carousel extends StatelessWidget {
                                                       DetailsView(
                                                           details:
                                                               movieDetails),
-                                                  settings:
-                                                      RouteSettings(arguments: {
-                                                    "isImageValid":
-                                                        item.isImageValid,
-                                                    "isFavorite": isFavorite
-                                                  })));
+                                                  settings: RouteSettings(
+                                                      arguments: {
+                                                        "isImageValid":
+                                                            item.isImageValid,
+                                                        "isFavorite": isFavorite
+                                                      })));
                                         });
                                       },
                                     ).timeout(Duration(seconds: 5),
                                             onTimeout: () {
-                                      _showLoading(context,
+                                      Constants.showLoading(context,
                                           title: "Something went wrong",
                                           message: Text("Please, try again",
                                               textAlign: TextAlign.center),
@@ -163,26 +170,5 @@ class Carousel extends StatelessWidget {
     );
   }
 
-  _showLoading(BuildContext context,
-      {@required String title,
-      Widget message = const Text(""),
-      bool dismissible = true,
-      @required String buttonText}) {
-    showDialog(
-        barrierDismissible: dismissible,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(title, textAlign: TextAlign.center),
-            content: message,
-            actions: [
-              FlatButton(
-                  child: Text(buttonText),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
-            ],
-          );
-        });
-  }
+
 }

@@ -12,8 +12,8 @@ class FavoritesDatabase {
   static const String _id = "table_id";
   static const String _movieId = "id";
   static const String _movieTitle = "title";
-  static const String _movieRate = "voteAverage";
-  static const String _movieImage = "posterUrl";
+  static const String _movieRate = "vote_average";
+  static const String _movieImage = "poster_url";
 
   static const String tableSql = "CREATE TABLE $_favoritesTable(" +
       "$_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -25,41 +25,54 @@ class FavoritesDatabase {
   Future<int> save(int movieId, String movieTitle, String movieRate,
       String movieImage) async {
     final Database db = await getDatabase();
-
     var path;
 
-    try {
-      var imageId = await ImageDownloader.downloadImage(movieImage);
+    if (!(movieImage == Constants.PLACE_HOLDER_IMAGE)) {
+      try {
+        var imageId = await ImageDownloader.downloadImage(movieImage,
+            destination: AndroidDestinationType.directoryDownloads);
 
-      var fileName = await ImageDownloader.findName(imageId);
-      path = await ImageDownloader.findPath(imageId);
-      var size = await ImageDownloader.findByteSize(imageId);
-      var mimeType = await ImageDownloader.findMimeType(imageId);
+        var fileName = await ImageDownloader.findName(imageId);
+        path = await ImageDownloader.findPath(imageId);
+        var size = await ImageDownloader.findByteSize(imageId);
+        var mimeType = await ImageDownloader.findMimeType(imageId);
 
-      print("fileName:   +++++++ $fileName");
-      print("path:   +++++++ $path");
-    } catch (error) {
-      print(error);
+        print("path:   +++++++ $path");
+      } catch (error) {
+        print(error);
+      }
     }
 
     if (path == null) path = Constants.PLACE_HOLDER_IMAGE;
 
-    print("\n\nsalvo!");
-
     return db.insert(_favoritesTable, {
-      "id": movieId,
-      "title": movieTitle,
-      "voteAverage": movieRate,
-      "posterUrl": path,
+      _movieId: movieId,
+      _movieTitle: movieTitle,
+      _movieRate: movieRate,
+      _movieImage: path,
     });
-
-    print("----------------------");
   }
 
   Future<int> delete(int movieId) async {
     final Database db = await getDatabase();
 
+    MovieModel movie = await findSaved(movieId);
+
+    final dir = Directory(movie.posterUrl);
+    dir.deleteSync(recursive: true);
+
     return db.delete(_favoritesTable, where: "id = $movieId");
+  }
+
+  Future<MovieModel> findSaved(int movieId) async {
+    final Database db = await getDatabase();
+
+    final List<Map<String, dynamic>> result =
+        await db.query(_favoritesTable, where: "id = $movieId");
+
+    print("Result ${result[0].toString()}");
+
+    return MovieModel.fromJson(result[0]);
   }
 
   Future<bool> verifyFavorite(int movieId) async {
@@ -80,10 +93,10 @@ class FavoritesDatabase {
 
     result.forEach((element) {
       favorites.add(MovieModel(
-          id: element["id"],
-          title: element["title"],
-          voteAverage: element["voteAverage"],
-          posterUrl: element["posterUrl"]));
+          id: element[_movieId],
+          title: element[_movieTitle],
+          voteAverage: element[_movieRate],
+          posterUrl: element[_movieImage]));
     });
 
     return favorites.length != 0 ? favorites : null;

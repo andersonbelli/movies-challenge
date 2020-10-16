@@ -39,22 +39,19 @@ class FavoritesView extends StatelessWidget {
                       print("posterUrl  ++  " + item.posterUrl.toString());
 
                       return ListTile(
+                        tileColor: Constants.customWhite[900],
                         title: Text(item.title),
                         subtitle: Text(item.voteAverage.toString()),
-                        leading: item.posterUrl == null
-                            ? Image.asset(Constants.PLACE_HOLDER_IMAGE)
-                            : Image.file(new File(item.posterUrl)),
+                        leading: Image.asset(
+                          item.posterUrl != null
+                              ? item.posterUrl
+                              : Constants.PLACE_HOLDER_IMAGE,
+                          errorBuilder:
+                              (BuildContext context, object, stacktrace) {
+                            return Image.asset(Constants.PLACE_HOLDER_IMAGE);
+                          },
+                        ),
                       );
-
-                      // var image = new File.fromUri(File(item.posterUrl).uri);
-                      //
-                      // return ListTile(
-                      //   title: Text(item.title),
-                      //   subtitle: Text(item.voteAverage.toString()),
-                      //   leading: Image.file(File(item.posterUrl != null
-                      //       ? item.posterUrl
-                      //       : Constants.PLACE_HOLDER_IMAGE)),
-                      // );
                     });
               } else {
                 return Center(
@@ -77,7 +74,7 @@ class FavoritesView extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                          text: " in the details page.",
+                          text: " in the movie details page.",
                           style: TextStyle(fontSize: 18, color: Colors.white)),
                     ]),
                     textAlign: TextAlign.center,

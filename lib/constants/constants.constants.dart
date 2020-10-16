@@ -1,10 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Constants {
-  static final String BASE_URL = "https://desafio-mobile.nyc3.digitaloceanspaces.com/";
+  static final String BASE_URL =
+      "https://desafio-mobile.nyc3.digitaloceanspaces.com/";
   static final String MOVIES_URL = "movies";
+  static final String PLACE_HOLDER_IMAGE =
+      "lib/assets/images/movie_placeholder.png";
 
-  static final String PLACE_HOLDER_IMAGE = "lib/assets/images/movie_placeholder.png";
+  static Future requestStorage() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+    print(statuses[Permission.storage]);
+  }
+
+  static showLoading(BuildContext context,
+      {@required String title,
+      Widget message = const Text(""),
+      bool dismissible = true,
+      @required String buttonText}) {
+    showDialog(
+        barrierDismissible: dismissible,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.blue),
+            ),
+            content: message,
+            actions: [
+              buttonText != null
+                  ? FlatButton(
+                      child: Text(
+                        buttonText,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      })
+                  : Container(width: 0.0, height: 0.0)
+            ],
+          );
+        });
+  }
 
   static Map<int, Color> mainColor = {
     50: Color.fromRGBO(40, 121, 254, .1),

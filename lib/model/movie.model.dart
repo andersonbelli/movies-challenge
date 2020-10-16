@@ -38,7 +38,7 @@ class MovieModel {
     voteAverage = json['vote_average'];
     title = json['title'];
     posterUrl = json['poster_url'];
-    genres = json['genres'].cast<String>();
+    if (json['genres'] != null) genres = json['genres'].cast<String>();
     releaseDate = json['release_date'];
   }
 
