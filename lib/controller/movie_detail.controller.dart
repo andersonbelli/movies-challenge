@@ -21,6 +21,8 @@ class MovieDetailController {
 
       return responseData;
     } on DioError catch (e) {
+      print("\nDioError: $e");
+
       print("Error code: " +
           e.response.statusCode.toString() +
           " - " +

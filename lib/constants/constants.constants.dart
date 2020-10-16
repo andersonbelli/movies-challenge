@@ -18,7 +18,7 @@ class Constants {
   static showLoading(BuildContext context,
       {@required String title,
       Widget message = const Text(""),
-      bool dismissible = true,
+      @required bool dismissible,
       @required String buttonText}) {
     showDialog(
         barrierDismissible: dismissible,

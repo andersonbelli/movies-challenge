@@ -30,14 +30,7 @@ class FavoritesView extends StatelessWidget {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      print("\n\nindex: " + index.toString());
-
                       MovieModel item = snapshot.data[index];
-
-                      print("title" + item.title);
-                      print("voteAverage" + item.voteAverage.toString());
-                      print("posterUrl  ++  " + item.posterUrl.toString());
-
                       return ListTile(
                         tileColor: Constants.customWhite[900],
                         title: Text(item.title),

@@ -94,7 +94,8 @@ class _CarouselState extends State<Carousel> {
                               margin: new EdgeInsets.only(top: 5),
                               builder: new DotSwiperPaginationBuilder(
                                   // color: Colors.black54,
-                                  color: Color.fromRGBO(242, 99, 112, 0.2),
+                                  // color: Color.fromRGBO(242, 99, 112, 0.2),
+                                  color: Color.fromRGBO(240,255,255, 0.3),
                                   activeColor: Colors.black87,
                                   size: 10.0,
                                   activeSize: 15.0)),
@@ -169,6 +170,4 @@ class _CarouselState extends State<Carousel> {
       },
     );
   }
-
-
 }
